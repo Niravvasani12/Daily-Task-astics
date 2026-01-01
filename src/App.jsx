@@ -60,6 +60,7 @@ function App() {
       key: "2",
       title: "Name",
       dataIndex: "name",
+      // FilterDropDown used for Searching The data in record 
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
