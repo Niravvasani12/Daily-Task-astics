@@ -227,6 +227,8 @@ function App() {
     <div className="App">
       <header className="App-header">
         <Table columns={columns} dataSource={dataSource} />
+      </header>
+      <header className="App-header">
         <Button onClick={onAddUser}>Add New User From Here</Button>
       </header>
     </div>
