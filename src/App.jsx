@@ -60,7 +60,7 @@ function App() {
       key: "2",
       title: "Name",
       dataIndex: "name",
-      // FilterDropDown used for Searching The data in record 
+      // FilterDropDown used for Searching The data in record
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
@@ -226,8 +226,8 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Button onClick={onAddUser}>Add New User From Here</Button>
         <Table columns={columns} dataSource={dataSource} />
+        <Button onClick={onAddUser}>Add New User From Here</Button>
       </header>
     </div>
   );
