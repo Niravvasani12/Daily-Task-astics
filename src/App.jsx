@@ -159,8 +159,6 @@ function App() {
     },
   ];
 
-  const onAddUser = () => {};
-
   const onDeleteUser = (record) => {
     Modal.confirm({
       title: "Are you sure, you want to delete this user/User data",
@@ -187,9 +185,7 @@ function App() {
           }}
         />
       </header>
-      <header className="App-header">
-        <Button onClick={onAddUser}>Add New User From Here</Button>
-      </header>
+      <header className="App-header"></header>
     </div>
   );
 }

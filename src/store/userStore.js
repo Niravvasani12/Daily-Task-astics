@@ -52,6 +52,8 @@ class UserStore {
     }, 2000);
   }
 
+  //? Add User In our add demo
+
   addUser() {
     const randNumber = Math.floor(Math.random() * 100);
 
@@ -70,7 +72,11 @@ class UserStore {
     });
   }
 
-  deleteUser() {}
+  //? reomve User In our add demo
+
+  deleteUser(id) {
+    this.users = this.users.filter((u) => u.id !== id);
+  }
 }
 
 export default new UserStore();
