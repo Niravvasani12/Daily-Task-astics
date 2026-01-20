@@ -192,7 +192,7 @@ function App() {
     const randNumber = Math.floor(Math.random() * 100);
 
     const randomLetter = Array.from({ length: 5 }, () =>
-      String.fromCharCode(65 + Math.floor(Math.random() * 26))
+      String.fromCharCode(65 + Math.floor(Math.random() * 26)),
     ).join("");
 
     const today = new Date().toISOString().split("T")[0];
@@ -226,7 +226,15 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Table columns={columns} dataSource={dataSource} />
+        <Table
+          columns={columns}
+          dataSource={dataSource}
+          rowKey="id"
+          pagination={{
+            pageSize: 5,
+            showSizeChanger: true,
+          }}
+        />
       </header>
       <header className="App-header">
         <Button onClick={onAddUser}>Add New User From Here</Button>
