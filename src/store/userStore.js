@@ -13,6 +13,8 @@ class UserStore {
     this.fetchUsers();
   }
 
+  //* Remove API data From App.jsx and attach on below
+
   fetchUsers() {
     this.loading = true;
     setTimeout(() => {
@@ -50,7 +52,23 @@ class UserStore {
     }, 2000);
   }
 
-  addUser() {}
+  addUser() {
+    const randNumber = Math.floor(Math.random() * 100);
+
+    const randomLetter = Array.from({ length: 5 }, () =>
+      String.fromCharCode(65 + Math.floor(Math.random() * 26)),
+    ).join("");
+
+    const today = new Date().toISOString().split("T")[0];
+
+    this.users.push({
+      id: randNumber,
+      name: randomLetter,
+      email: randomLetter + randNumber + "@gmail.com",
+      address: randomLetter + randNumber,
+      date: today,
+    });
+  }
 
   deleteUser() {}
 }

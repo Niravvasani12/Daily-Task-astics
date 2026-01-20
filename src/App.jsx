@@ -159,27 +159,7 @@ function App() {
     },
   ];
 
-  const onAddUser = () => {
-    const randNumber = Math.floor(Math.random() * 100);
-
-    const randomLetter = Array.from({ length: 5 }, () =>
-      String.fromCharCode(65 + Math.floor(Math.random() * 26)),
-    ).join("");
-
-    const today = new Date().toISOString().split("T")[0];
-
-    const newUser = {
-      id: randNumber,
-      name: randomLetter,
-      email: randomLetter + randNumber + "@gmail.com",
-      address: randomLetter + randNumber,
-      date: today,
-    };
-
-    setDataSource((pre) => {
-      return [...pre, newUser];
-    });
-  };
+  const onAddUser = () => {};
 
   const onDeleteUser = (record) => {
     Modal.confirm({
