@@ -39,7 +39,10 @@ const UserTable = observer(() => {
           onPressEnter={() => confirm()}
           onBlur={() => confirm()}
         />
+        
       </>
+      <Button onClick ={()=> confirm()} type="primary">Search Here</Button>
+      <Button onClick={()=>clearFilters() danger> Reset </Button>
     ),
   });
 });
