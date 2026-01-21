@@ -3,13 +3,6 @@
 import "antd/dist/antd.css";
 import "./App.css";
 import { useState } from "react";
-import {
-  // EditOutlined For Edit User Data
-  EditOutlined,
-  DeleteOutlined,
-  SearchOutlined,
-} from "@ant-design/icons";
-import { Button, Table, Modal, Input } from "antd";
 
 function App() {
   //* Fetch the Data or Data source
