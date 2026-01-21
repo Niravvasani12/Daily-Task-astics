@@ -8,14 +8,14 @@ import {
   DeleteOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
-import { Button, Table, Modal, Input } from "antd";
+import { Button, Table, Modal, Input, Spin } from "antd";
 
 const UserTable = observer(() => {
-  const { user, loading, adduser, deleteUser } = userStore;
+  const { users, loading, adduser, deleteUser } = userStore;
 
   const onDelete = (record) => {
     Modal.confirm({
-      title: "Are You Sure to DElete This Data ?",
+      title: "Are you sure, you want to delete this user/User data",
       okType: "danger",
       onOk: () => deleteUser(record.id),
     });
@@ -42,11 +42,55 @@ const UserTable = observer(() => {
         <Button onClick={() => confirm()} type="primary">
           Search Here
         </Button>
-        <Button onClick={() => clearFilters()} danger>
+        <Button onClick={() => clearFilters()} type="danger">
           {" "}
           Reset{" "}
         </Button>
       </>
     ),
+    filterIcon: () => <SearchOutlined />,
+    onFilter: (value, record) =>
+      record[dataIndex].toLowerCase().includer(value.toLowerCase()),
   });
+
+  const columns = [
+    { title: "ID", dataIndex: "id" },
+    { title: "Name", dataIndex: "name", ...getSearch("name") },
+    { title: "Email", dataIndex: "email", ...getSearch("email") },
+    { title: "Address", dataIndex: "address", ...getSearch("address") },
+    {
+      title: "Date",
+      dataIndex: "date",
+      sorter: (a, b) => new Date(a.date) - new Date(b.date),
+    },
+    {
+      title: "Delete",
+      render: (record) => (
+        <DeleteOutlined
+          style={{ color: "red" }}
+          onClick={() => onDelete(record)}
+        />
+      ),
+    },
+  ];
+
+  if (loading) {
+    return <Spin size="large" />;
+  }
+
+  return (
+    <>
+      <Table
+        columns={columns}
+        dataSource={users}
+        rowKey={"id"}
+        pagination={{ pageSize: 10, showSizeChanger: true }}
+      />
+      <Button onClick={adduser} type="primary">
+        Add User
+      </Button>
+    </>
+  );
 });
+
+export default UserTable;

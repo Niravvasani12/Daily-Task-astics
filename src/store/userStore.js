@@ -19,6 +19,12 @@ class UserStore {
     this.loading = true;
     setTimeout(() => {
       this.users = [
+        //* key show How many column are addeed in our table
+        // ? 1. filterDropdown is used to Search the data of record
+        // ? 2. DeletedOutlined is used to delete the data from record
+        // ? 3. EditedOutlined is used to Edit the data from record
+        // ? 4. const today = new Date().toISOString().split("T")[0]; is used TO sort data by its date
+
         {
           id: 1,
           name: "Nirav",
