@@ -15,8 +15,9 @@ class UserStore {
 
   //* Remove API data From App.jsx and attach on below
 
-  fetchUsers() {
+  fetchUsers = () => {
     this.loading = true;
+
     setTimeout(() => {
       this.users = [
         //* key show How many column are addeed in our table
@@ -56,33 +57,33 @@ class UserStore {
       ];
       this.loading = false;
     }, 2000);
-  }
+  };
 
   //? Add User In our add demo
 
-  addUser() {
-    const randNumber = Math.floor(Math.random() * 100);
+  // addUser() {
+  //   const randNumber = Math.floor(Math.random() * 100);
 
-    const randomLetter = Array.from({ length: 5 }, () =>
-      String.fromCharCode(65 + Math.floor(Math.random() * 26)),
-    ).join("");
+  //   const randomLetter = Array.from({ length: 5 }, () =>
+  //     String.fromCharCode(65 + Math.floor(Math.random() * 26)),
+  //   ).join("");
 
-    const today = new Date().toISOString().split("T")[0];
+  //   const today = new Date().toISOString().split("T")[0];
 
-    this.users.push({
-      id: randNumber,
-      name: randomLetter,
-      email: randomLetter + randNumber + "@gmail.com",
-      address: randomLetter + randNumber,
-      date: today,
-    });
-  }
+  //   this.users.push({
+  //     id: randNumber,
+  //     name: randomLetter,
+  //     email: randomLetter + randNumber + "@gmail.com",
+  //     address: randomLetter + randNumber,
+  //     date: today,
+  //   });
+  // }
 
   //? reomve User In our add demo
 
-  deleteUser(id) {
+  deleteUser = (id) => {
     this.users = this.users.filter((u) => u.id !== id);
-  }
+  };
 }
 
 export default new UserStore();

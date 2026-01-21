@@ -4,14 +4,13 @@ import { observer } from "mobx-react-lite";
 import userStore from "../store/userStore";
 import {
   // EditOutlined For Edit User Data
-  EditOutlined,
   DeleteOutlined,
   SearchOutlined,
 } from "@ant-design/icons";
 import { Button, Table, Modal, Input, Spin } from "antd";
 
 const UserTable = observer(() => {
-  const { users, loading, adduser, deleteUser } = userStore;
+  const { users, loading, deleteUser } = userStore;
 
   const onDelete = (record) => {
     Modal.confirm({
@@ -50,7 +49,7 @@ const UserTable = observer(() => {
     ),
     filterIcon: () => <SearchOutlined />,
     onFilter: (value, record) =>
-      record[dataIndex].toLowerCase().includer(value.toLowerCase()),
+      record[dataIndex].toLowerCase().includes(value.toLowerCase()),
   });
 
   const columns = [
@@ -65,7 +64,7 @@ const UserTable = observer(() => {
     },
     {
       title: "Delete",
-      render: (record) => (
+      render: (_, record) => (
         <DeleteOutlined
           style={{ color: "red" }}
           onClick={() => onDelete(record)}
@@ -86,9 +85,9 @@ const UserTable = observer(() => {
         rowKey={"id"}
         pagination={{ pageSize: 10, showSizeChanger: true }}
       />
-      <Button onClick={adduser} type="primary">
+      {/* <Button onClick={addUser} type="primary">
         Add User
-      </Button>
+      </Button> */}
     </>
   );
 });
