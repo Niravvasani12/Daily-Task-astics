@@ -58,15 +58,10 @@ const UserTable = observer(() => {
   });
 
   const columns = [
-    { title: "ID", dataIndex: "id" },
-    { title: "Name", dataIndex: "name", ...getSearch("name") },
-    { title: "Email", dataIndex: "email", ...getSearch("email") },
-    { title: "Address", dataIndex: "address", ...getSearch("address") },
-    {
-      title: "Date",
-      dataIndex: "date",
-      sorter: (a, b) => new Date(a.date) - new Date(b.date),
-    },
+    { title: "UserID", dataIndex: "userId" },
+    { title: "ID", dataIndex: "id", ...getSearch("id") },
+    { title: "Title", dataIndex: "title", ...getSearch("title") },
+    { title: "Completed", dataIndex: "completed", ...getSearch("completed") },
     {
       title: "Delete",
       render: (_, record) => (
@@ -81,7 +76,7 @@ const UserTable = observer(() => {
   //* Loader Show
 
   if (loading) {
-    return <Spin size="medium" />;
+    return <Spin size="large" />;
   }
 
   return (
@@ -90,7 +85,7 @@ const UserTable = observer(() => {
         columns={columns}
         dataSource={users}
         rowKey={"id"}
-        pagination={{ pageSize: 10, showSizeChanger: true }}
+        pagination={{ showSizeChanger: true }}
       />
       {/* <Button onClick={addUser} type="primary">
         Add User

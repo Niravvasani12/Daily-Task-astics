@@ -59,16 +59,15 @@ class UserStore {
       // ];
 
       try {
-        const res = await fetch("https://jsonplaceholder.typicode.com/users");
+        const res = await fetch("https://jsonplaceholder.typicode.com/todos");
         const data = await res.json();
 
         runInAction(() => {
-          this.users = data.map((user) => ({
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            address: `${user.address.city}, ${user.address.street}`,
-            date: new Date().toISOString().split("T")[0],
+          this.users = data.map((todos) => ({
+            userId: todos.userId,
+            id: todos.id,
+            title: todos.title,
+            completed: todos.completed ? "true" : "false",
           }));
           this.loading = false;
         });
