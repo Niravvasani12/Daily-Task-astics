@@ -12,6 +12,8 @@ import { Button, Table, Modal, Input, Spin } from "antd";
 const UserTable = observer(() => {
   const { users, loading, deleteUser } = userStore;
 
+  //* delete
+
   const onDelete = (record) => {
     Modal.confirm({
       title: "Are you sure, you want to delete this user/User data",
@@ -19,6 +21,8 @@ const UserTable = observer(() => {
       onOk: () => deleteUser(record.id),
     });
   };
+
+  // * Search
 
   const getSearch = (dataIndex) => ({
     filterDropdown: ({
@@ -38,6 +42,7 @@ const UserTable = observer(() => {
           onPressEnter={() => confirm()}
           onBlur={() => confirm()}
         />
+
         <Button onClick={() => confirm()} type="primary">
           Search Here
         </Button>
@@ -73,8 +78,10 @@ const UserTable = observer(() => {
     },
   ];
 
+  //* Loader Show
+
   if (loading) {
-    return <Spin size="large" />;
+    return <Spin size="medium" />;
   }
 
   return (
