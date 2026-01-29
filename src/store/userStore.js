@@ -106,6 +106,12 @@ class UserStore {
   deleteUser = (id) => {
     this.users = this.users.filter((u) => u.id !== id);
   };
+
+  editUser = (id, newTitle) => {
+    this.users = this.users.map((todo) =>
+      todo.id === id ? { ...todo, title: newTitle, completed: "true" } : todo,
+    );
+  };
 }
 
 export default new UserStore();

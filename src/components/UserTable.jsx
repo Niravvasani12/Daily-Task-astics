@@ -6,12 +6,18 @@ import {
   // EditOutlined For Edit User Data
   DeleteOutlined,
   SearchOutlined,
+  EditOutlined,
+  CheckCircleOutlined,
+  CloseCircleOutlined,
 } from "@ant-design/icons";
 import { Button, Table, Modal, Input, Spin } from "antd";
+import { useState } from "react";
 
 const UserTable = observer(() => {
-  const { users, loading, deleteUser } = userStore;
-
+  const { users, loading, deleteUser, editUser, toggleCompleted } = userStore;
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editTitle, setEditTitle] = useState("");
+  const [editId, setEditId] = useState(null);
   //* delete
 
   const onDelete = (record) => {
@@ -22,6 +28,19 @@ const UserTable = observer(() => {
     });
   };
 
+  //* Edit
+
+  const onEdit = (record) => {
+    setEditId(record.id);
+    setEditTitle(record.title);
+    setIsModalOpen(true);
+  };
+
+  const handleUpdate = () => {
+    editUser(editId, editTitle);
+
+    setIsModalOpen(false);
+  };
   // * Search
 
   const getSearch = (dataIndex) => ({
@@ -41,33 +60,81 @@ const UserTable = observer(() => {
           }
           onPressEnter={() => confirm()}
           onBlur={() => confirm()}
+          style={{ marginBottom: 8, display: "block" }}
         />
 
-        <Button onClick={() => confirm()} type="primary">
-          Search Here
+        <Button
+          type="primary"
+          onClick={() => confirm()}
+          style={{ width: "100%", marginBottom: 8 }}
+        >
+          Search
         </Button>
-        <Button onClick={() => clearFilters()} type="danger">
-          {" "}
-          Reset{" "}
+
+        <Button
+          onClick={() => {
+            clearFilters();
+            confirm();
+          }}
+          danger
+          style={{ width: "100%" }}
+        >
+          Reset
         </Button>
       </>
     ),
     filterIcon: () => <SearchOutlined />,
-    onFilter: (value, record) =>
-      record[dataIndex].toLowerCase().includes(value.toLowerCase()),
+    onFilter: (value, record) => {
+      const recordValue = record[dataIndex];
+
+      if (typeof recordValue === "number") {
+        return recordValue === Number(value);
+      }
+
+      return String(recordValue).toLowerCase().includes(value.toLowerCase());
+    },
   });
 
   const columns = [
     { title: "UserID", dataIndex: "userId" },
     { title: "ID", dataIndex: "id", ...getSearch("id") },
-    { title: "Title", dataIndex: "title", ...getSearch("title") },
-    { title: "Completed", dataIndex: "completed", ...getSearch("completed") },
+    { title: "Title", dataIndex: "title" },
+    {
+      title: "Completed",
+      dataIndex: "completed",
+      filters: [
+        { text: "Completed", value: "true" },
+        { text: "Not Completed", value: "false" },
+      ],
+      onFilter: (value, record) => record.completed === value,
+      render: (_, record) =>
+        record.completed === "true" ? (
+          <CheckCircleOutlined
+            style={{ color: "green", fontSize: 18, cursor: "pointer" }}
+            onClick={() => toggleCompleted(record.id)}
+          />
+        ) : (
+          <CloseCircleOutlined
+            style={{ color: "red", fontSize: 18, cursor: "pointer" }}
+            onClick={() => toggleCompleted(record.id)}
+          />
+        ),
+    },
     {
       title: "Delete",
       render: (_, record) => (
         <DeleteOutlined
           style={{ color: "red" }}
           onClick={() => onDelete(record)}
+        />
+      ),
+    },
+    {
+      title: "Edit",
+      render: (_, record) => (
+        <EditOutlined
+          style={{ color: "blue", cursor: "pointer" }}
+          onClick={() => onEdit(record)}
         />
       ),
     },
@@ -87,9 +154,19 @@ const UserTable = observer(() => {
         rowKey={"id"}
         pagination={{ showSizeChanger: true }}
       />
-      {/* <Button onClick={addUser} type="primary">
-        Add User
-      </Button> */}
+
+      <Modal
+        title="Edit Todo"
+        open={isModalOpen}
+        onOk={handleUpdate}
+        onCancel={() => setIsModalOpen(false)}
+      >
+        <Input
+          value={editTitle}
+          onChange={(e) => setEditTitle(e.target.value)}
+          placeholder="Edit title"
+        />
+      </Modal>
     </>
   );
 });
