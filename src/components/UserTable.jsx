@@ -1,48 +1,61 @@
-//* Here We Can Add User table Like Its Buttoh, form , search , sort
-
 import { observer } from "mobx-react-lite";
 import userStore from "../store/userStore";
 import {
-  // EditOutlined For Edit User Data
   DeleteOutlined,
   SearchOutlined,
   EditOutlined,
   CheckCircleOutlined,
   CloseCircleOutlined,
+  PlusOutlined,
 } from "@ant-design/icons";
-import { Button, Table, Modal, Input, Spin } from "antd";
+import { Button, Table, Modal, Input, Spin, Switch } from "antd";
 import { useState } from "react";
 
 const UserTable = observer(() => {
-  const { users, loading, deleteUser, editUser, toggleCompleted } = userStore;
+  const { users, loading, deleteUser, editUser, toggleCompleted, addUser } =
+    userStore;
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editTitle, setEditTitle] = useState("");
   const [editId, setEditId] = useState(null);
-  //* delete
+  const [editCompleted, setEditCompleted] = useState(false);
 
+  const [addOpen, setAddOpen] = useState(false);
+  const [newTitle, setNewTitle] = useState("");
+  const [newCompleted, setNewCompleted] = useState(false);
+
+  //  Delete
   const onDelete = (record) => {
     Modal.confirm({
-      title: "Are you sure, you want to delete this user/User data",
+      title: "Are you sure you want to delete this Todo?",
       okType: "danger",
       onOk: () => deleteUser(record.id),
     });
   };
 
-  //* Edit
-
+  //  Edit
   const onEdit = (record) => {
     setEditId(record.id);
     setEditTitle(record.title);
+    setEditCompleted(record.completed);
     setIsModalOpen(true);
   };
 
   const handleUpdate = () => {
-    editUser(editId, editTitle);
-
+    editUser(editId, editTitle, editCompleted);
     setIsModalOpen(false);
   };
-  // * Search
 
+  //  Add New
+  const handleAdd = () => {
+    if (!newTitle.trim()) return;
+    addUser(newTitle, newCompleted);
+    setAddOpen(false);
+    setNewTitle("");
+    setNewCompleted(false);
+  };
+
+  //  Search
   const getSearch = (dataIndex) => ({
     filterDropdown: ({
       setSelectedKeys,
@@ -53,7 +66,7 @@ const UserTable = observer(() => {
       <>
         <Input
           autoFocus
-          placeholder="search"
+          placeholder="Search..."
           value={selectedKeys[0]}
           onChange={(e) =>
             setSelectedKeys(e.target.value ? [e.target.value] : [])
@@ -72,11 +85,11 @@ const UserTable = observer(() => {
         </Button>
 
         <Button
+          danger
           onClick={() => {
             clearFilters();
             confirm();
           }}
-          danger
           style={{ width: "100%" }}
         >
           Reset
@@ -86,29 +99,25 @@ const UserTable = observer(() => {
     filterIcon: () => <SearchOutlined />,
     onFilter: (value, record) => {
       const recordValue = record[dataIndex];
-
-      if (typeof recordValue === "number") {
-        return recordValue === Number(value);
-      }
-
       return String(recordValue).toLowerCase().includes(value.toLowerCase());
     },
   });
 
+  //  Table Columns
   const columns = [
-    { title: "UserID", dataIndex: "userId" },
+    { title: "User ID", dataIndex: "userId" },
     { title: "ID", dataIndex: "id", ...getSearch("id") },
     { title: "Title", dataIndex: "title" },
     {
       title: "Completed",
       dataIndex: "completed",
       filters: [
-        { text: "Completed", value: "true" },
-        { text: "Not Completed", value: "false" },
+        { text: "Completed", value: true },
+        { text: "Not Completed", value: false },
       ],
       onFilter: (value, record) => record.completed === value,
       render: (_, record) =>
-        record.completed === "true" ? (
+        record.completed ? (
           <CheckCircleOutlined
             style={{ color: "green", fontSize: 18, cursor: "pointer" }}
             onClick={() => toggleCompleted(record.id)}
@@ -121,15 +130,6 @@ const UserTable = observer(() => {
         ),
     },
     {
-      title: "Delete",
-      render: (_, record) => (
-        <DeleteOutlined
-          style={{ color: "red" }}
-          onClick={() => onDelete(record)}
-        />
-      ),
-    },
-    {
       title: "Edit",
       render: (_, record) => (
         <EditOutlined
@@ -138,23 +138,41 @@ const UserTable = observer(() => {
         />
       ),
     },
+    {
+      title: "Delete",
+      render: (_, record) => (
+        <DeleteOutlined
+          style={{ color: "red", cursor: "pointer" }}
+          onClick={() => onDelete(record)}
+        />
+      ),
+    },
   ];
 
-  //* Loader Show
-
-  if (loading) {
-    return <Spin size="large" />;
-  }
+  //  Loader
+  if (loading) return <Spin size="large" />;
 
   return (
     <>
+      {/* Add Button */}
+      <Button
+        type="primary"
+        icon={<PlusOutlined />}
+        style={{ marginBottom: 16 }}
+        onClick={() => setAddOpen(true)}
+      >
+        Add Todo
+      </Button>
+
+      {/*  Table */}
       <Table
         columns={columns}
         dataSource={users}
-        rowKey={"id"}
+        rowKey="id"
         pagination={{ showSizeChanger: true }}
       />
 
+      {/*  Edit Modal */}
       <Modal
         title="Edit Todo"
         open={isModalOpen}
@@ -164,8 +182,38 @@ const UserTable = observer(() => {
         <Input
           value={editTitle}
           onChange={(e) => setEditTitle(e.target.value)}
-          placeholder="Edit title"
+          placeholder="Edit Title"
         />
+
+        <div style={{ marginTop: 10 }}>
+          Completed:{" "}
+          <Switch
+            checked={editCompleted}
+            onChange={(val) => setEditCompleted(val)}
+          />
+        </div>
+      </Modal>
+
+      {/*  Add Modal */}
+      <Modal
+        title="Add New Todo"
+        open={addOpen}
+        onOk={handleAdd}
+        onCancel={() => setAddOpen(false)}
+      >
+        <Input
+          value={newTitle}
+          onChange={(e) => setNewTitle(e.target.value)}
+          placeholder="Enter Title"
+        />
+
+        <div style={{ marginTop: 10 }}>
+          Completed:{" "}
+          <Switch
+            checked={newCompleted}
+            onChange={(val) => setNewCompleted(val)}
+          />
+        </div>
       </Modal>
     </>
   );
