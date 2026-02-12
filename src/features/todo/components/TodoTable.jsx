@@ -78,7 +78,7 @@ const TodoTable = observer(() => {
       rowKey="id"
       pagination={{
         pageSize: 5,
-        showSizeChanger: true,
+        showSizeChanger: false,
         pageSizeOptions: ["5", "10", "20"],
       }}
     />
