@@ -76,7 +76,11 @@ const TodoTable = observer(() => {
       columns={columns}
       dataSource={todoStore.filteredTodos}
       rowKey="id"
-      pagination={{ showSizeChanger: true }}
+      pagination={{
+        pageSize: 5,
+        showSizeChanger: true,
+        pageSizeOptions: ["5", "10", "20"],
+      }}
     />
   );
 });
