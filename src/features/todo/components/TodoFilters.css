@@ -1,10 +1,20 @@
-.b1:hover,
-.b2:hover,
+.b1:hover {
+  background-color: aqua;
+  border-color: black;
+  box-shadow: 10px 10px 10px rgb(114, 139, 34);
+}
+
+.b2:hover {
+  background-color: aqua;
+  border-color: black;
+  box-shadow: 10px 10px 10px rgb(46, 34, 139);
+}
+
 .b3:hover {
   background-color: aqua;
   border-color: black;
+  box-shadow: 10px 10px 10px rgb(139, 53, 34);
 }
-
 .active {
   color: rgb(0, 0, 0) !important;
   border-color: #1677ff !important;
