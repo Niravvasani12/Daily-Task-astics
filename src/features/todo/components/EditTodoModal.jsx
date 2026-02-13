@@ -5,13 +5,16 @@ import todoStore from "../store/todoStore";
 
 const EditTodoModal = observer(() => {
   const todo = todoStore.editingTodo;
+  const editModalOpen = todoStore.editModalOpen;
 
   const [title, setTitle] = useState("");
   const [password, setPassword] = useState("");
   const [completed, setCompleted] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const inputRef = useRef(null);
 
+  // Set values when editing todo changes
   useEffect(() => {
     if (todo) {
       setTitle(todo.title);
@@ -20,16 +23,17 @@ const EditTodoModal = observer(() => {
     }
   }, [todo]);
 
-  // Focus when modal opens
   useEffect(() => {
-    if (todoStore.editModalOpen) {
+    if (editModalOpen) {
+      setPasswordVisible(false);
+
       const timer = setTimeout(() => {
         inputRef.current?.focus();
-      }, 200); // delay because modal has animation
+      }, 200);
 
       return () => clearTimeout(timer);
     }
-  }, []);
+  }, [editModalOpen]);
 
   return (
     <Modal
@@ -51,6 +55,10 @@ const EditTodoModal = observer(() => {
       <Input.Password
         value={password}
         onChange={(e) => setPassword(e.target.value)}
+        visibilityToggle={{
+          visible: passwordVisible,
+          onVisibleChange: (visible) => setPasswordVisible(visible),
+        }}
         style={{ marginTop: 10 }}
       />
 

@@ -11,7 +11,7 @@ const AddTodoModal = observer(() => {
   const resetEditForm = () => {
     setTitle("");
     setPassword("");
-    setCompleted();
+    setCompleted(false);
   };
 
   return (
@@ -20,7 +20,7 @@ const AddTodoModal = observer(() => {
       <Button
         type="primary"
         icon={<PlusOutlined />}
-        style={{ marginBottom: 16 }}
+        style={{ marginBottom: 160 }}
         onClick={() => todoStore.openAddModal()}
       >
         Add Todo
