@@ -1,0 +1,11 @@
+.b1:hover,
+.b2:hover,
+.b3:hover {
+  background-color: aqua;
+  border-color: black;
+}
+
+.active {
+  color: rgb(0, 0, 0) !important;
+  border-color: #1677ff !important;
+}

@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { Modal, Input, Switch } from "antd";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import todoStore from "../store/todoStore";
 
 const EditTodoModal = observer(() => {
@@ -10,6 +10,8 @@ const EditTodoModal = observer(() => {
   const [password, setPassword] = useState("");
   const [completed, setCompleted] = useState(false);
 
+  const inputRef = useRef(null);
+
   useEffect(() => {
     if (todo) {
       setTitle(todo.title);
@@ -17,6 +19,17 @@ const EditTodoModal = observer(() => {
       setCompleted(todo.completed);
     }
   }, [todo]);
+
+  // Focus when modal opens
+  useEffect(() => {
+    if (todoStore.editModalOpen) {
+      const timer = setTimeout(() => {
+        inputRef.current?.focus();
+      }, 200); // delay because modal has animation
+
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   return (
     <Modal
@@ -29,7 +42,11 @@ const EditTodoModal = observer(() => {
       }}
       onCancel={() => todoStore.closeEditModal()}
     >
-      <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+      <Input
+        ref={inputRef}
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
 
       <Input.Password
         value={password}

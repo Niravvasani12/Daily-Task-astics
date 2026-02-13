@@ -8,6 +8,11 @@ const AddTodoModal = observer(() => {
   const [title, setTitle] = useState("");
   const [password, setPassword] = useState("");
   const [completed, setCompleted] = useState(false);
+  const resetEditForm = () => {
+    setTitle("");
+    setPassword("");
+    setCompleted(true);
+  };
 
   return (
     <>
@@ -27,12 +32,17 @@ const AddTodoModal = observer(() => {
         onOk={() => {
           if (!title || !password) return;
           todoStore.addTodo(title, password, completed);
+          resetEditForm();
           setTitle("");
           setPassword("");
           setCompleted(false);
           todoStore.closeAddModal();
         }}
-        onCancel={() => todoStore.closeAddModal()}
+        onCancel={() => {
+          //WHen close the add menu then reset the data
+          resetEditForm();
+          todoStore.closeAddModal();
+        }}
       >
         <Input
           placeholder="Title"
